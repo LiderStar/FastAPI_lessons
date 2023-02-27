@@ -8,6 +8,7 @@ users = [
     {"id": 3, "role": "postman", "name": "Sam"},
 ]
 
+
 @app.get("/user/{users_id}")
 async def get_id(user_id: int):
     return [user for user in users if user.get("id") == user_id]
@@ -19,16 +20,20 @@ trades = [
     {"id": 4, "user_id": 1, "currency": "BTC", "side": "sell", "price": 129, "amount": 2.17},
 ]
 
+
 @app.get("/traders")
 async def get_trade(limit: int, offset: int):
     return trades[offset:][:limit]
 
-users = [
+users2 = [
     {"id": 1, "role": "admin", "name": "Bob"},
     {"id": 2, "role": "user", "name": "Doe"},
     {"id": 3, "role": "postman", "name": "Sam"},
 ]
 
-@app.get("/user/{user_id}")
+
+@app.post("/user/{user_id}")
 async def change_name(user_id: int, name: str):
-    return
+    current_user = list(filter(lambda user: user.get("id") == user_id, users2))[0]
+    current_user['name'] = name
+    return {"status": 200, "data": current_user}
